@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"io/ioutil"
 	"net"
 	"os"
 
@@ -13,14 +14,19 @@ func main() {
 
 	expected := ([]byte)("notest")
 
-	str := `{"page": 1, "fruits": ["apple", "peach"]}`
+	content, err := ioutil.ReadFile("connect.json")
+	if err != nil {
+		panic(err)
+	}
+
+	str := string(content)
 	fmt.Println(str)
 
 	// connect to socket
 	conn, _ := net.Dial("tcp", "127.0.0.1:8081")
 
 	fmt.Fprintf(conn, str+"\n")
-	message, _ := bufio.NewReader(conn).ReadString('\n')
+	message, _ := bufio.NewReader(conn).ReadString('}')
 	fmt.Println("Message from server: " + message)
 
 	file, err := shm.Open("myShm", os.O_RDONLY, 0600)
