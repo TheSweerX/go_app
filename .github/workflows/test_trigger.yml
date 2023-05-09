@@ -35,4 +35,4 @@ jobs:
     steps:
       - name: Set status
         run: |
-          core.setFailed('test execution failed')
+          needs.test-trigger-job.result=failure
