@@ -1,0 +1,38 @@
+concurrency:
+  group: concurrency-on-testing-env
+
+  cancel-in-progress: false
+
+name: ActTrigger
+run-name: testing the triggers
+on: [push]
+jobs:
+  test-trigger-job:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Hello from the trigger side!"
+
+  # test_matrix:
+  #   name: Matrix Test
+  #   runs-on: ubuntu-latest
+  #   needs: test-trigger-job
+  #   strategy:
+  #     matrix:
+  #       drt_test: [
+  #         test_1,
+  #         test_2,
+  #         test_3
+  #         ]
+  #   steps:
+  #     - name: echo
+  #       run: |
+  #         echo "This is: ${{ matrix.drt_test }}"
+
+  test_setting_status:
+    name: status setter
+    runs-on: ubuntu-latest
+    needs: test-trigger-job
+    steps:
+      - name: Set status
+        run: |
+          needs.test-trigger-job.setFailed("test execution failed")
