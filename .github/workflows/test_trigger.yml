@@ -12,21 +12,22 @@ jobs:
     steps:
       - run: echo "Hello from the trigger side!"
 
-  # test_matrix:
-  #   name: Matrix Test
-  #   runs-on: ubuntu-latest
-  #   needs: test-trigger-job
-  #   strategy:
-  #     matrix:
-  #       drt_test: [
-  #         test_1,
-  #         test_2,
-  #         test_3
-  #         ]
-  #   steps:
-  #     - name: echo
-  #       run: |
-  #         echo "This is: ${{ matrix.drt_test }}"
+  test_matrix:
+    name: Matrix Test
+    runs-on: ubuntu-latest
+    needs: test-trigger-job
+    strategy:
+      matrix:
+        drt_test: [
+          test_1,
+          test_2,
+          test_3
+          ]
+    steps:
+      - name: echo
+        run: |
+          echo "This is: ${{ matrix.drt_test }}"
+          exit 1
 
   test_setting_status:
     name: status setter
@@ -35,4 +36,4 @@ jobs:
     steps:
       - name: Set status
         run: |
-          set needs.test-trigger-job.result=failure
+          needs.test-trigger-job.setFailed("test execution failed")
