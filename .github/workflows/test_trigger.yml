@@ -35,4 +35,4 @@ jobs:
     steps:
       - name: Set status
         run: |
-          needs.test-trigger-job.setFailed("test execution failed")
+          needs.test-trigger-job.setFailed('test execution failed')
