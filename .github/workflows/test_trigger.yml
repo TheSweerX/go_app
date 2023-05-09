@@ -35,4 +35,4 @@ jobs:
     steps:
       - name: Set status
         run: |
-          needs.test-trigger-job.result=failure
+          set needs.test-trigger-job.result=failure
